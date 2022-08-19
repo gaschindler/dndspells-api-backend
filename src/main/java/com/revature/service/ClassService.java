@@ -34,15 +34,15 @@ public class ClassService {
 	public Class getById(int id) throws ClassNotFoundException {
 		// id must be greater than 0
 		if (id <= 0) {
-			log.warn("ID given was invalid. ID passed was: {}. Returning a 400 error", id);
-			throw new ClassNotFoundException("Invalid ID. ID must be greater than 0.");
+			log.warn("Class ID given was invalid. ID passed was: {}. Returning a 400 error", id);
+			throw new ClassNotFoundException("Invalid class ID. ID must be greater than 0.");
 		}
 		
 		Optional<Class> returnClass = classRepo.findById(id);
 		
 		if (!returnClass.isPresent()) {
 			log.warn("ID given not associated with a class in database. ID passed was: {}. Returning a 400 error", id);
-			throw new ClassNotFoundException("Invalid ID. ID not in database.");
+			throw new ClassNotFoundException("Invalid class ID. ID not in database.");
 		}
 		
 		log.info("Class with the ID: {} located in database. Returning this class");
@@ -51,17 +51,20 @@ public class ClassService {
 	
 	@Transactional(readOnly=true)
 	public Class getByName(String name) throws ClassNotFoundException {
+		// make name lower case to match database
+		name = name.toLowerCase();
+		
 		// name must not be blank
 		if (name.equals("")) {
-			log.warn("Name given was invalid. Name passed was: \"{}\". Returning a 400 error", name);
-			throw new ClassNotFoundException("Invalid name. Name must not be blank.");
+			log.warn("Class name given was invalid. Name passed was: \"{}\". Returning a 400 error", name);
+			throw new ClassNotFoundException("Invalid class name. Name must not be blank.");
 		}
 		
 		Optional<Class> returnClass = classRepo.findByName(name);
 		
 		if (!returnClass.isPresent()) {
 			log.warn("Name given not associated with a class in database. Name passed was: \"{}\". Returning a 400 error", name);
-			throw new ClassNotFoundException("Invalid name. Name not in database.");
+			throw new ClassNotFoundException("Invalid class name. Name not in database.");
 		}
 		
 		log.info("Class with the name: {} located in database. Returning this class");
