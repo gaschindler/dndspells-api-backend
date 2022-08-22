@@ -17,4 +17,6 @@ public interface SpellRepository extends JpaRepository<Spell, Integer> {
 	
 	Optional<Spell> findByName(String name);
 	
+	List<Spell> findByLevel(int level);
+	
 }

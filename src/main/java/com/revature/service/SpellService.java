@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.data.ClassRepository;
+import com.revature.data.SchoolRepository;
 import com.revature.data.SpellRepository;
 import com.revature.entities.Class;
+import com.revature.entities.School;
 import com.revature.entities.Spell;
 import com.revature.exceptions.SpellNotFoundException;
 import com.revature.smallentities.SmallSpell;
@@ -23,12 +25,14 @@ public class SpellService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	private SpellRepository spellRepo;
 	private ClassRepository classRepo;
+	private SchoolRepository schoolRepo;
 	
 	@Autowired
-	public SpellService(SpellRepository spellRepo, ClassRepository classRepo) {
+	public SpellService(SpellRepository spellRepo, ClassRepository classRepo, SchoolRepository schoolRepo) {
 		super();
 		this.spellRepo = spellRepo;
 		this.classRepo = classRepo;
+		this.schoolRepo = schoolRepo;
 	}
 	
 	@Transactional(readOnly=true)
@@ -94,7 +98,7 @@ public class SpellService {
 		
 		// name must not be blank
 		if (name.equals("")) {
-			log.warn("Class name given was invalid. Name passed was :\"{}\". Returning a 400 error", name);
+			log.warn("Class name given was invalid. Name passed was: \"{}\". Returning a 400 error", name);
 			throw new SpellNotFoundException("Invalid class name. Name must not be blank.");
 		}
 		
@@ -106,6 +110,73 @@ public class SpellService {
 		}
 		
 		return queryClass.get().getSpells();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Spell> getBySchoolName(String name) throws SpellNotFoundException {
+		// make name lower case to match database
+		name = name.toLowerCase();
+		
+		// name must not be blank
+		if (name.equals("")) {
+			log.warn("School name given was invalid. Name passed was: \"{}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid school name. Name must not be blank.");
+		}
+		
+		Optional<School> querySchool = schoolRepo.findByName(name);
+		
+		if (!querySchool.isPresent()) {
+			log.warn("Name given not associted with a school in database. Name passed was: \"{}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid school name. Name not in database");
+		}
+		
+		return querySchool.get().getSpells();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Spell> getByLevel(int level) throws SpellNotFoundException {
+		// level must be in the range [0, 9] inclusive
+		if (level < 0 || level > 9) {
+			log.warn("Level given was invalid. Level passed was: {}. Returning a 400 error", level);
+			throw new SpellNotFoundException("Invalid level. Level must be between 0 and 9 inclusive.");
+		}
+		
+		return spellRepo.findByLevel(level);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Spell> getByClassAndLevel(String name, int level) throws SpellNotFoundException {
+		// make name lower case to match database
+		name = name.toLowerCase();
+		
+		// name must not be blank
+		if (name.equals("")) {
+			log.warn("Class name given was invalid. Name passed was: \" {}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid class name. Name must not be blank.");
+		}
+		
+		// level must be in the range [0, 9] inclusive
+		if (level < 0 || level > 9) {
+			log.warn("Level given was invalid. Level passed was: {}. Returning a 400 error", level);
+			throw new SpellNotFoundException("Invalid level. Level must be between 0 and 9 inclusive.");
+		}
+		
+		Optional<Class> queryClass = classRepo.findByName(name);
+		
+		if (!queryClass.isPresent()) {
+			log.warn("Name given not associated with a class in database. Name passed was: \"{}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid class name. Name not in database");
+		}
+		
+		List<Spell> spells = queryClass.get().getSpells();
+		
+		for (Spell spell : spells) {
+			if (spell.getLevel() != level) {
+				spells.remove(spell);
+			}
+		}
+		
+		return spells;
 	}
 	
 }
