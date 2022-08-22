@@ -26,7 +26,7 @@ public class SpellService {
 	private ClassRepository classRepo;
 	
 	@Autowired
-	public SpellService(SpellRepository spellRepo) {
+	public SpellService(SpellRepository spellRepo, ClassRepository classRepo) {
 		super();
 		this.spellRepo = spellRepo;
 		this.classRepo = classRepo;
