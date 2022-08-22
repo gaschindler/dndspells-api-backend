@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.RequestEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,20 @@ public class ClassController {
 	public ResponseEntity<Class> getClassById(@PathVariable("id") int id) {
 		try {
 			return ResponseEntity.ok(classServ.getById(id));
+		} catch (ClassNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	/*
+	 * Returns the specified class by name or a 400 error if no class
+	 * with the specified name is found
+	 * http://{myurl}/api/classes/{name}/
+	 */
+	@GetMapping("/{name}")
+	public ResponseEntity<Class> getClassByName(@PathVariable("name") String name) {
+		try {
+			return ResponseEntity.ok(classServ.getByName(name));
 		} catch (ClassNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
