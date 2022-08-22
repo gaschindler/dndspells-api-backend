@@ -3,6 +3,7 @@ package com.revature.service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.revature.data.ClassRepository;
 import com.revature.data.SpellRepository;
+import com.revature.entities.Class;
 import com.revature.entities.Spell;
 import com.revature.exceptions.SpellNotFoundException;
 import com.revature.smallentities.SmallSpell;
@@ -20,11 +23,13 @@ public class SpellService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	private SpellRepository spellRepo;
+	private ClassRepository classRepo;
 	
 	@Autowired
 	public SpellService(SpellRepository spellRepo) {
 		super();
 		this.spellRepo = spellRepo;
+		this.classRepo = classRepo;
 	}
 	
 	@Transactional(readOnly=true)
@@ -83,6 +88,25 @@ public class SpellService {
 		return returnSpell.get();
 	}
 	
-	
+	@Transactional(readOnly=true)
+	public Set<Spell> getByClassName(String name) throws SpellNotFoundException {
+		// make name lower case to match database
+		name = name.toLowerCase();
+		
+		// name must not be blank
+		if (name.equals("")) {
+			log.warn("Class name given was invalid. Name passed was :\"{}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid class name. Name must not be blank.");
+		}
+		
+		Optional<Class> queryClass = classRepo.findByName(name);
+		
+		if (!queryClass.isPresent()) {
+			log.warn("Name given not associated with a class in database. Name passed was: \"{}\". Returning a 400 error", name);
+			throw new SpellNotFoundException("Invalid class name. Name not in database");
+		}
+		
+		return queryClass.get().getSpells();
+	}
 	
 }
