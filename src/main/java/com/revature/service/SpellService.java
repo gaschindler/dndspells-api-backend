@@ -3,7 +3,6 @@ package com.revature.service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +88,7 @@ public class SpellService {
 	}
 	
 	@Transactional(readOnly=true)
-	public Set<Spell> getByClassName(String name) throws SpellNotFoundException {
+	public List<Spell> getByClassName(String name) throws SpellNotFoundException {
 		// make name lower case to match database
 		name = name.toLowerCase();
 		

@@ -1,6 +1,6 @@
 package com.revature.entities;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,6 +77,6 @@ public class Spell {
 	@JoinTable(name="spells_classes",
 	joinColumns=@JoinColumn(name="spell_id"),
 	inverseJoinColumns=@JoinColumn(name="class_id"))
-	private Set<Class> classes;
+	private List<Class> classes;
 	
 }

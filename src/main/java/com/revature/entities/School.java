@@ -1,6 +1,6 @@
 package com.revature.entities;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +40,6 @@ public class School {
 	private String description;
 	
 	@OneToMany(mappedBy="school")
-	private Set<Spell> spells;
+	private List<Spell> spells;
 	
 }
