@@ -74,6 +74,10 @@ public class SpellService {
 		// make name lower case to match database
 		name = name.toLowerCase();
 		
+		// replace '-' and '_' with ' '
+		name = name.replace('-', ' ');
+		name = name.replace('_', ' ');
+		
 		// name must not be blank
 		if (name.equals("")) {
 			log.warn("Spell name given was invalid. Name passed was: \"{}\". Returning a 400 error", name);
