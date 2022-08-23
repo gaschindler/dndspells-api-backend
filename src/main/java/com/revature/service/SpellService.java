@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -174,9 +175,12 @@ public class SpellService {
 		
 		List<Spell> spells = queryClass.get().getSpells();
 		
-		for (Spell spell : spells) {
-			if (spell.getLevel() != level) {
-				spells.remove(spell);
+		Iterator<Spell> spellIterator = spells.iterator();
+		
+		while (spellIterator.hasNext()) {
+			Spell currentSpell = spellIterator.next();
+			if (currentSpell.getLevel() != level) {
+				spellIterator.remove();
 			}
 		}
 		
