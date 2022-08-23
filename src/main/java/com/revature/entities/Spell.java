@@ -66,10 +66,10 @@ public class Spell {
 	@Column(name="concentration")
 	private boolean concentration;
 	
-	@Column(name="description")
+	@Column(name="description", columnDefinition="TEXT")
 	private String description;
 	
-	@Column(name="higher_level")
+	@Column(name="higher_level", columnDefinition="TEXT")
 	private String higherLevel;
 	
 	@ManyToMany
