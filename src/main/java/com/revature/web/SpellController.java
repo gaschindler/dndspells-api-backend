@@ -42,9 +42,9 @@ public class SpellController {
 	/*
 	 * Returns the specified spell by id or a 400 error if no
 	 * spell with the specified id is found
-	 * http://{myurl}/api/spells/{id}/
+	 * http://{myurl}/api/spells/id/{id}/
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public ResponseEntity<Spell> getSpellById(@PathVariable("id") int id) {
 		try {
 			return ResponseEntity.ok(spellServ.getById(id));
@@ -56,9 +56,9 @@ public class SpellController {
 	/*
 	 * Returns the specified spell by name or a 400 error if no
 	 * spell with the specified name is found
-	 * http://{myurl}/api/spells/{name}/
+	 * http://{myurl}/api/spells/name/{name}/
 	 */
-	@GetMapping("/{name}")
+	@GetMapping("/name/{name}")
 	public ResponseEntity<Spell> getSpellByName(@PathVariable("name") String name) {
 		try {
 			return ResponseEntity.ok(spellServ.getByName(name));

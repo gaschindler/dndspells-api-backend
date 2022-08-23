@@ -40,9 +40,9 @@ public class SchoolController {
 	/*
 	 * Returns the specified school by id or a 400 error if no school
 	 * with the specified id is found
-	 * http://{myurl}/api/schools/{id}/
+	 * http://{myurl}/api/schools/id/{id}/
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public ResponseEntity<School> getSchoolById(@PathVariable("id") int id) {
 		try {
 			return ResponseEntity.ok(schoolServ.getById(id));
@@ -54,9 +54,9 @@ public class SchoolController {
 	/*
 	 * Returns the specified school by name or a 400 error if no school
 	 * with the specified name is found
-	 * http://{myurl}/api/schools/{name}/
+	 * http://{myurl}/api/schools/name/{name}/
 	 */
-	@GetMapping("/{name}")
+	@GetMapping("/name/{name}")
 	public ResponseEntity<School> getSchoolByName(@PathVariable("name") String name) {
 		try {
 			return ResponseEntity.ok(schoolServ.getByName(name));

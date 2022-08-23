@@ -39,9 +39,9 @@ public class ClassController {
 	/*
 	 * Returns the specified class by id or a 400 error if no class
 	 * with the specified id is found
-	 * http://{myurl}/api/classes/{id}/
+	 * http://{myurl}/api/classes/id/{id}/
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public ResponseEntity<Class> getClassById(@PathVariable("id") int id) {
 		try {
 			return ResponseEntity.ok(classServ.getById(id));
@@ -53,9 +53,9 @@ public class ClassController {
 	/*
 	 * Returns the specified class by name or a 400 error if no class
 	 * with the specified name is found
-	 * http://{myurl}/api/classes/{name}/
+	 * http://{myurl}/api/classes/name/{name}/
 	 */
-	@GetMapping("/{name}")
+	@GetMapping("/name/{name}")
 	public ResponseEntity<Class> getClassByName(@PathVariable("name") String name) {
 		try {
 			return ResponseEntity.ok(classServ.getByName(name));
