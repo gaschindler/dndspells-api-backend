@@ -77,5 +77,11 @@ public class Spell {
 	joinColumns=@JoinColumn(name="spell_id"),
 	inverseJoinColumns=@JoinColumn(name="class_id"))
 	private List<Class> classes;
+
+	public Spell(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	
 }

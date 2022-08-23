@@ -12,7 +12,7 @@ import com.revature.entities.Spell;
 @Repository
 public interface SpellRepository extends JpaRepository<Spell, Integer> {
 
-	@Query("select s.id, s.name from Spell s")
+	@Query("select new Spell(s.id, s.name) from Spell s")
 	List<Spell> findAll();
 	
 	Optional<Spell> findByName(String name);
